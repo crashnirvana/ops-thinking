@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>运营思维知识体系</title>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6b7280;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --border: #e5e7eb;
+    --sidebar-w: 280px;
+    --banner-h: 360px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-logo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sidebar-logo .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.6); }
+  }
+
+  .toc-list { list-style: none; }
+  .toc-list li { margin-bottom: 0.15rem; }
+
+  .toc-list a {
+    display: block;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+  }
+  .toc-list a:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .toc-list a.active {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+    border-left-color: var(--accent);
+  }
+  .toc-category {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+    margin: 1.2rem 0 0.4rem 0.75rem;
+    font-weight: 600;
+  }
+  .toc-category:first-of-type { margin-top: 0; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: #b0b7c3;
+  }
+
+  /* ── Main ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ── Banner ── */
+  .banner {
+    height: var(--banner-h);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 30%, #2563eb 70%, #0f172a 100%);
+    background-size: 400% 400%;
+    animation: banner-shift 20s ease infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes banner-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .banner-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    animation: float-up linear infinite;
+  }
+  @keyframes float-up {
+    0% { transform: translateY(100%) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+  }
+
+  .banner-content {
+    text-align: center;
+    z-index: 2;
+    padding: 2rem;
+  }
+  .banner-content h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.6rem;
+    animation: fade-in-up 1s ease-out;
+  }
+  .banner-content .subtitle {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    animation: fade-in-up 1s ease-out 0.15s both;
+  }
+  .banner-scroll-hint {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce-down 2s ease-in-out infinite;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .banner-scroll-hint span {
+    display: block;
+    width: 28px; height: 28px;
+    border-right: 2px solid rgba(255,255,255,0.5);
+    border-bottom: 2px solid rgba(255,255,255,0.5);
+    transform: rotate(45deg);
+  }
+  @keyframes bounce-down {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Content ── */
+  .content { max-width: 780px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+  .section { margin-bottom: 4rem; }
+  .section h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    color: #111827;
+    position: relative;
+    padding-bottom: 0.75rem;
+  }
+  .section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 48px; height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .section h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 2.2rem 0 0.8rem;
+    color: #1f2937;
+  }
+  .section h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 1.5rem 0 0.5rem;
+    color: #374151;
+  }
+
+  .section p { margin-bottom: 0.8rem; color: #374151; }
+
+  .section ul, .section ol {
+    margin: 0.5rem 0 1rem 1.2rem;
+    color: #374151;
+  }
+  .section li { margin-bottom: 0.35rem; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.2rem 0;
+    transition: box-shadow 0.3s;
+  }
+  .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .card h4 { margin-top: 0; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background: var(--card);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  th, td {
+    text-align: left;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+
+  /* Blockquote */
+  blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 1.2rem 0;
+    padding: 0.8rem 1.2rem;
+    background: var(--accent-light);
+    border-radius: 0 8px 8px 0;
+    color: #374151;
+    font-style: italic;
+  }
+
+  /* Emphasis */
+  strong { color: #111827; }
+  .highlight {
+    background: linear-gradient(180deg, transparent 60%, #dbeafe 60%);
+    padding: 0 0.15em;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Chevron list for appendix */
+  .chevron-list { list-style: none; margin-left: 0 !important; }
+  .chevron-list li {
+    display: flex; align-items: baseline; gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .chevron-list li:last-child { border-bottom: none; }
+  .chevron-list .num {
+    font-weight: 700; color: var(--accent); min-width: 1.8rem;
+    font-size: 0.85rem;
+  }
+  .chevron-list .term {
+    font-weight: 600; min-width: 8rem; font-size: 0.9rem;
+  }
+  .chevron-list .desc { color: var(--text-muted); font-size: 0.88rem; }
+
+  /* Back to top */
+  .back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(12px);
+    transition: all 0.3s;
+    z-index: 200;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+  }
+  .back-to-top.visible { opacity: 1; transform: translateY(0); }
+  .back-to-top:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Mobile ── */
+  .mobile-toc-toggle {
+    display: none;
+    position: fixed; top: 1rem; left: 1rem; z-index: 300;
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    cursor: pointer;
+    font-size: 1.3rem;
+    align-items: center; justify-content: center;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .mobile-toc-toggle { display: flex; }
+    .main { margin-left: 0; }
+    .banner-content h1 { font-size: 1.8rem; }
+    .banner { height: 280px; }
+    .content { padding: 2rem 1rem 4rem; }
+    :root { --sidebar-w: 0px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Mobile Toggle -->
+<button class="mobile-toc-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="目录">
+  ☰
+</button>
+
+<!-- ──── Sidebar ──── -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="dot"></span> 运营思维
+  </div>
+
+  <ul class="toc-list">
+    <li class="toc-category">思维篇</li>
+    <li><a href="#s-mvp" onclick="closeSidebar()">1. MVP 最小可行产品</a></li>
+    <li><a href="#s-first" onclick="closeSidebar()">2. 第一性原理</a></li>
+    <li><a href="#s-occam" onclick="closeSidebar()">3. 奥卡姆剃刀</a></li>
+    <li><a href="#s-peak" onclick="closeSidebar()">4. 峰终定律</a></li>
+    <li><a href="#s-hanlon" onclick="closeSidebar()">5. 汉隆剃刀</a></li>
+    <li><a href="#s-pareto" onclick="closeSidebar()">6. 帕累托法则</a></li>
+    <li><a href="#s-data" onclick="closeSidebar()">7. 数据驱动原则</a></li>
+    <li><a href="#s-behavior" onclick="closeSidebar()">8. 行为心理学</a></li>
+    <li><a href="#s-pmf" onclick="closeSidebar()">9. PMF 产品-市场匹配</a></li>
+    <li><a href="#s-goal" onclick="closeSidebar()">10. 目标渐近效应</a></li>
+    <li><a href="#s-scarcity" onclick="closeSidebar()">11. 稀缺效应</a></li>
+    <li><a href="#s-onboarding" onclick="closeSidebar()">12. Onboarding</a></li>
+
+    <li class="toc-category">复盘篇</li>
+    <li><a href="#s-review" onclick="closeSidebar()">数据复盘思维 · 5Why</a></li>
+
+    <li class="toc-category">规范篇</li>
+    <li><a href="#s-framework" onclick="closeSidebar()">运营规范框架</a></li>
+
+    <li class="toc-category">附录</li>
+    <li><a href="#s-appendix" onclick="closeSidebar()">核心概念速查表</a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    © 2026 crashnirvana<br>
+    更新于 2026-07-15
+  </div>
+</nav>
+
+<div class="overlay" id="overlay" onclick="document.querySelector('.sidebar').classList.remove('open')" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:99;"></div>
+
+<!-- ──── Main ──── -->
+<main class="main">
+
+  <!-- Banner -->
+  <section class="banner" id="top">
+    <div class="banner-particles" id="particles"></div>
+    <div class="banner-content">
+      <h1>运营思维知识体系</h1>
+      <p class="subtitle">从第一性原理到数据复盘 — 系统化运营方法论</p>
+    </div>
+    <div class="banner-scroll-hint" onclick="document.getElementById('s-mvp').scrollIntoView({behavior:'smooth'})">
+      <span></span>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ============ SECTION: MVP ============ -->
+    <div class="section" id="s-mvp">
+      <h2>1. 最小可行产品原则（MVP）</h2>
+      <p><strong>核心</strong>：用最小成本验证核心假设，验证指标不能影响用户体验指标。</p>
+      <p><strong>执行步骤</strong>：用户痛点 → 原型设计 → 灰度测试 → 数据验证 → 迭代 / 放弃</p>
+
+      <h3>运营案例</h3>
+      <div class="card">
+        <h4>🤖 AI 评论</h4>
+        <p>通过单一 AI 人设对用户的语音跟读进行伪学员评论反馈，对 30% 的用户进行灰度验证。该版本 10 分钟有效使用率连续一周都高于对照组后，再进行多个 AI 角色的开发，进一步提高该策略的效果。</p>
+      </div>
+      <div class="card">
+        <h4>📖 跟读打卡</h4>
+        <p>模仿名师练习提升自我 → 连续 7 天路径推送验证 → 业务周 10 分钟有效率提升 2% → 验证不同名师跟读均有数据提升 → 推进跟读功能上线 → 有效提升 10 分钟有效使用率 → 推进跟读打卡功能上线。</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: First Principles ============ -->
+    <div class="section" id="s-first">
+      <h2>2. 第一性原理（First Principles）</h2>
+      <p><strong>核心</strong>：回归本质解构问题，跳出行业惯性。</p>
+
+      <h3>案例</h3>
+      <div class="card">
+        <h4>🎵 运营创新</h4>
+        <p>网易云音乐放弃播放量排行，用「场景化歌单」重构音乐推荐逻辑。</p>
+      </div>
+      <div class="card">
+        <h4>📚 内容方向专注</h4>
+        <p>梨花声音研修院 App 社区放弃娱乐内容方向，重点做学习创作内容方向，贴合用户下载 App 本质目的是为了学习提升。</p>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: Occam's Razor ============ -->
+    <div class="section" id="s-occam">
+      <h2>3. 奥卡姆剃刀原则（Occam's Razor）</h2>
+      <p><strong>核心</strong>：「如无必要，勿增实体」—— 选择最简单有效的解决方案。</p>
+
+      <h3>运营案例</h3>
+      <ul>
+        <li><strong>注册流程优化</strong>：砍掉非必填字段，每减少 1 个字段转化率提升 5-10%</li>
+        <li><strong>直播预约流程简化</strong>：「点击运营位 → 进入直播预约页 → 点击预约按钮」改为「点击运营位直接预约」</li>
+      </ul>
+    </div>
+
+    <!-- ============ SECTION: Peak-End Rule ============ -->
+    <div class="section" id="s-peak">
+      <h2>4. 峰终定律（Peak-End Rule）</h2>
+      <p><strong>原理</strong>：用户对体验的记忆由 <strong>峰值时刻</strong>（最好 / 最差）和 <strong>结束时刻</strong> 决定。</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>阶段</th><th>峰值设计</th><th>终值设计</th></tr></thead>
+          <tbody>
+            <tr><td>推荐上量</td><td>时间 + 名师见面会</td><td>—</td></tr>
+            <tr><td>游学营</td><td>下单支付成功动画 + 名师见面会特效</td><td>—</td></tr>
+            <tr><td>内容消费</td><td>爆款内容精准推荐</td><td>"下次来看"预告</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: Hanlon's Razor ============ -->
+    <div class="section" id="s-hanlon">
+      <h2>5. 汉隆剃刀原则（Hanlon's Razor）</h2>
+      <blockquote>能用愚蠢解释的，不要归因于恶意。</blockquote>
+
+      <h3>运营场景</h3>
+      <ul>
+        <li><strong>用户流失分析</strong>：用户在梨花声音研修院购买线下游学训练营后一半以上都没添加班长导致退费，排查发现是购买后未弹出添加弹窗，而非用户不想添加。</li>
+        <li><strong>跨部门协作</strong>：将设计延迟归因于需求不清晰，而非故意拖延。</li>
+      </ul>
+    </div>
+
+    <!-- ============ SECTION: Pareto ============ -->
+    <div class="section" id="s-pareto">
+      <h2>6. 用户中心原则：帕累托法则（二八原则）</h2>
+      <p><strong>核心</strong>：<span class="highlight">20% 用户贡献 80% 价值</span></p>
+      <ul>
+        <li>优先服务高价值用户（如 RFM 模型中的「重要价值客户」）</li>
+        <li>避免无差别运营（全量推送 → 分层触达）</li>
+      </ul>
+    </div>
+
+    <!-- ============ SECTION: Data-Driven ============ -->
+    <div class="section" id="s-data">
+      <h2>7. 数据驱动原则</h2>
+      <p><strong>原理</strong>：归因分析（因果推断）</p>
+
+      <h3>操作要求</h3>
+      <ul>
+        <li>所有策略必须<span class="highlight">可量化</span>（点击率 / 转化率 / ROI）</li>
+        <li>定性或定量判断功能是否可行，无法判断则不能落地</li>
+        <li>建立用户行为<span class="highlight">数据闭环</span>（点击 → 转化 → 留存 全链路追踪）</li>
+      </ul>
+    </div>
+
+    <!-- ============ SECTION: Behavioral Psychology ============ -->
+    <div class="section" id="s-behavior">
+      <h2>8. 行为心理学原理</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>效应</th><th>说明</th><th>示例</th></tr></thead>
+          <tbody>
+            <tr><td><strong>稀缺性效应</strong></td><td>物品 / 机会越少越想要</td><td>限时优惠「仅剩 3 个名额」</td></tr>
+            <tr><td><strong>损失厌恶</strong></td><td>失去的痛苦 &gt; 获得的快乐</td><td>「您的 50 元券即将过期」</td></tr>
+            <tr><td><strong>社交证明</strong></td><td>他人行为影响自身判断</td><td>「256 人正在购买」</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: PMF ============ -->
+    <div class="section" id="s-pmf">
+      <h2>9. PMF（产品-市场匹配）</h2>
+      <blockquote>PMF (Product-Market Fit)：产品能够满足目标市场的强烈需求，并具备可持续增长的能力。</blockquote>
+      <p><strong>关键特征</strong>：用户主动传播、留存率高、付费转化自然发生</p>
+
+      <h3>实现 PMF 的 4 步方法论</h3>
+
+      <div class="card"><h4>Step 1：定义理想用户（ICP）</h4>
+        <ul>
+          <li><strong>Who</strong>：列出 3-5 条核心用户特征（例：游学营购买用户在梨花消费过 1 万以上金额，名师粉丝）</li>
+          <li><strong>Pain</strong>：用户访谈确认 TOP3 痛点（例：购买会员的用户需求是即时反馈、练习次数、名师点评）</li>
+        </ul>
+      </div>
+      <div class="card"><h4>Step 2：构建 MVP 极简产品</h4>
+        <ul>
+          <li><strong>功能优先级</strong>：只做解决核心痛点的功能（如 Dropbox 早期仅演示「文件自动同步」）</li>
+          <li><strong>低成本验证</strong>：用 Landing Page 测意愿（假按钮点击率 > 30% 可继续开发）</li>
+        </ul>
+      </div>
+      <div class="card"><h4>Step 3：数据验证与快速迭代</h4>
+        <p>到播转化率（第 30 天留存 > 20%）等关键指标追踪。</p>
+      </div>
+      <div class="card"><h4>Step 4：规模化的准备</h4>
+        <ul>
+          <li><strong>商业模式验证</strong>：免费用户 → 付费用户转化率 > X%</li>
+          <li><strong>增长杠杆选择</strong>：</li>
+        </ul>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>杠杆类型</th><th>案例</th></tr></thead>
+            <tbody>
+              <tr><td>产品驱动</td><td>Dropbox「邀请得空间」</td></tr>
+              <tr><td>内容驱动</td><td>小红书 KOC 种草</td></tr>
+              <tr><td>渠道驱动</td><td>拼多多微信裂变</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>组织能力提升</strong>：标准化运营 SOP</p>
+      </div>
+
+      <h3>PMF 不同阶段的应对策略</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>阶段</th><th>特征</th><th>关键动作</th></tr></thead>
+          <tbody>
+            <tr><td><strong>PMF 前</strong></td><td>需求假设未验证</td><td>疯狂访谈用户，Pivot 转型</td></tr>
+            <tr><td><strong>PMF 临界点</strong></td><td>部分用户爱用但未规模化</td><td>优化 Onboarding 流程</td></tr>
+            <tr><td><strong>PMF 达成后</strong></td><td>用户自发增长</td><td>全力投入渠道扩张</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: Goal Gradient ============ -->
+    <div class="section" id="s-goal">
+      <h2>10. 目标渐近效应（Goal Gradient Effect）</h2>
+      <p><strong>定义</strong>：当人们接近目标时，行动动力会显著增强，类似「终点冲刺」心理。由行为心理学家 Clark Hull 提出。</p>
+      <p><strong>核心结论</strong>：</p>
+      <ul>
+        <li>目标完成度越高，行动速度越快（如会员卡快盖满时消费更频繁）</li>
+        <li>进度可视化能直接刺激行为（进度条、积分等级）</li>
+      </ul>
+
+      <h3>经典案例：咖啡店积分实验</h3>
+      <div class="card">
+        <p>顾客持有「买 10 杯送 1 杯」的积分卡：</p>
+        <ul>
+          <li><strong>A 组</strong>：卡有 10 个空白章（从 0 开始）</li>
+          <li><strong>B 组</strong>：卡有 12 个章（已预盖 2 章，需完成 10 章）</li>
+          <li><strong>结果</strong>：B 组完成速度比 A 组快 <span class="highlight">30%</span></li>
+          <li><strong>原因</strong>：「已完成 2/12」的错觉增强了动力</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: Scarcity ============ -->
+    <div class="section" id="s-scarcity">
+      <h2>11. 稀缺效应</h2>
+      <p><strong>定义</strong>：当物品 / 机会显得稀少或限时，人们会赋予其更高价值并加速行动。</p>
+
+      <h3>底层逻辑</h3>
+      <ul>
+        <li><strong>损失厌恶</strong>：害怕错失（FOMO）带来的痛苦 &gt; 获得同等价值的快乐</li>
+        <li><strong>社会竞争暗示</strong>：稀缺 = 被他人认可，触发社会认同心理</li>
+      </ul>
+
+      <h3>经典案例</h3>
+      <blockquote>钻石商戴比尔斯通过控制产量，塑造「钻石恒久远，一颗永流传」的稀缺感。</blockquote>
+    </div>
+
+    <!-- ============ SECTION: Onboarding ============ -->
+    <div class="section" id="s-onboarding">
+      <h2>12. Onboarding（用户引导）</h2>
+      <p><strong>定义</strong>：通过一系列引导步骤，帮助新用户快速发现产品价值并形成使用习惯的过程。</p>
+
+      <p><strong>核心目标</strong>：</p>
+      <ul>
+        <li><strong>降低流失率</strong>：减少用户「注册即流失」现象</li>
+        <li><strong>加速 Aha 时刻</strong>：让用户越快体验到「啊哈，这个产品真有用！」</li>
+      </ul>
+
+      <h3>4 种核心类型</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>类型</th><th>适用场景</th><th>典型案例</th></tr></thead>
+          <tbody>
+            <tr><td><strong>功能引导式</strong></td><td>复杂工具型产品（如 Figma）</td><td>分步交互教学 + 进度条</td></tr>
+            <tr><td><strong>目标导向式</strong></td><td>结果驱动型产品（如 Duolingo）</td><td>「选择你的学习目标」问卷</td></tr>
+            <tr><td><strong>社交激励式</strong></td><td>社区 / 社交产品（如 LinkedIn）</td><td>「完善资料后可见更多人脉」</td></tr>
+            <tr><td><strong>游戏化式</strong></td><td>低门槛大众产品（如 Tinder）</td><td>徽章奖励 + 进度动画</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: Review ============ -->
+    <div class="section" id="s-review">
+      <h2>数据复盘思维</h2>
+      <p><strong>核心理念</strong>：通过结构化追问，将问题从「人」归因转向「系统」归因。</p>
+
+      <h3>关键口诀</h3>
+      <ul>
+        <li>✅ 不停留于「谁错了」，要问<span class="highlight">「为什么能错」</span></li>
+        <li>✅ 不用「粗心」解释，用<span class="highlight">「流程缺陷」</span>解释</li>
+        <li>✅ 不满足于单一路径，探索<span class="highlight">多分支根因</span></li>
+      </ul>
+
+      <h3>追本溯源复盘模板：5Why 分析法</h3>
+      <blockquote>问题 → Why 1（直接原因）→ Why 2（流程原因）→ Why 3（管理原因）→ Why 4/5（文化/系统原因）</blockquote>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>层级</th><th>分析维度</th><th>提问方向</th></tr></thead>
+          <tbody>
+            <tr><td>第一层</td><td>直接原因</td><td>问题现象是什么？为什么会出现这个问题？</td></tr>
+            <tr><td>第二层</td><td>系统原因</td><td>有没有其他可能性？为什么这个环节没有防错机制？</td></tr>
+            <tr><td>第三层</td><td>组织/流程原因</td><td>团队没有提前发现？是否有监控或预警机制？为什么失效？</td></tr>
+            <tr><td>第四/五层</td><td>文化/管理原因</td><td>团队习惯性忽略这类风险？对风险认知是否有问题？</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>实战示例：推送错误事故</h3>
+      <div class="card">
+        <p><strong>问题</strong>：梨花研修院 App 社区推送消息有错别字</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>层级</th><th>问题</th><th>可能原因</th></tr></thead>
+          <tbody>
+            <tr><td>问题现象</td><td>用户收到错误的课程推广推送</td><td>运营配置了错误链接</td></tr>
+            <tr><td>Why 1</td><td>为什么配置了错误链接？</td><td>运营人员复制了旧版文案，未检查新链接</td></tr>
+            <tr><td>Why 2</td><td>为什么未检查新链接？</td><td>审核流程依赖人工目测，无自动校验</td></tr>
+            <tr><td>Why 3</td><td>为什么没有自动校验？</td><td>技术侧未开发链接校对工具，需求优先级低</td></tr>
+            <tr><td>Why 4</td><td>为什么优先级低？</td><td>管理层认为「人工审核够用」，未投入资源</td></tr>
+            <tr><td>Why 5</td><td>为什么管理层低估风险？</td><td>历史事故未造成重大损失，风险意识不足</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <blockquote><strong>最终根因</strong>：缺乏风险量化机制，导致管理层未重视自动化防错工具的开发。</blockquote>
+    </div>
+
+    <!-- ============ SECTION: Framework ============ -->
+    <div class="section" id="s-framework">
+      <h2>运营规范框架</h2>
+      <div class="card">
+        <ul>
+          <li><strong>定义阶段目标</strong>：明确每个阶段的北极星指标</li>
+          <li><strong>搭建用户生命周期体系</strong>：拉新 → 激活 → 留存 → 转化 → 传播</li>
+          <li><strong>设计路径的注意事项</strong>：简洁路径、降低摩擦、每一步可追踪</li>
+          <li><strong>项目 Owner 角色</strong>：对结果负责，协调资源，推进落地</li>
+          <li><strong>运营红线</strong>：不可触碰的底线（数据造假、违规推送等）</li>
+          <li><strong>兼职主播合作</strong>：培训体系、激励机制、品控标准</li>
+          <li><strong>运营人员素养</strong>：数据敏感度、用户视角、执行力、学习能力</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============ SECTION: Appendix ============ -->
+    <div class="section" id="s-appendix">
+      <h2>附录：核心概念速查表</h2>
+      <ul class="chevron-list">
+        <li><span class="num">01</span><span class="term">MVP</span><span class="desc">用最小成本验证核心假设</span></li>
+        <li><span class="num">02</span><span class="term">第一性原理</span><span class="desc">回归本质，跳出惯性思维</span></li>
+        <li><span class="num">03</span><span class="term">奥卡姆剃刀</span><span class="desc">选择最简单的有效方案</span></li>
+        <li><span class="num">04</span><span class="term">峰终定律</span><span class="desc">体验记忆 = 峰值 + 终点</span></li>
+        <li><span class="num">05</span><span class="term">汉隆剃刀</span><span class="desc">能用愚蠢解释，不归因恶意</span></li>
+        <li><span class="num">06</span><span class="term">帕累托法则</span><span class="desc">20% 用户创造 80% 价值</span></li>
+        <li><span class="num">07</span><span class="term">数据驱动</span><span class="desc">所有策略必须可量化</span></li>
+        <li><span class="num">08</span><span class="term">行为心理学</span><span class="desc">稀缺性 + 损失厌恶 + 社交证明</span></li>
+        <li><span class="num">09</span><span class="term">PMF</span><span class="desc">产品-市场匹配，4 步实现</span></li>
+        <li><span class="num">10</span><span class="term">目标渐近效应</span><span class="desc">越接近目标，动力越强</span></li>
+        <li><span class="num">11</span><span class="term">稀缺效应</span><span class="desc">限时限量提升感知价值</span></li>
+        <li><span class="num">12</span><span class="term">Onboarding</span><span class="desc">引导用户发现 Aha 时刻</span></li>
+        <li><span class="num">13</span><span class="term">5Why 分析法</span><span class="desc">5 层追问找到系统根因</span></li>
+      </ul>
+    </div>
+
+  </div><!-- .content -->
+</main>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+<script>
+// ── Banner particles ──
+(function() {
+  const container = document.getElementById('particles');
+  const count = 30;
+  for (let i = 0; i < count; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'particle';
+    const size = 2 + Math.random() * 6;
+    dot.style.width  = size + 'px';
+    dot.style.height = size + 'px';
+    dot.style.left   = Math.random() * 100 + '%';
+    dot.style.animationDuration = (8 + Math.random() * 16) + 's';
+    dot.style.animationDelay = Math.random() * 10 + 's';
+    container.appendChild(dot);
+  }
+})();
+
+// ── Active TOC highlighting ──
+(function() {
+  const sections = document.querySelectorAll('.section[id]');
+  const links = document.querySelectorAll('.toc-list a[href^="#s-"]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+})();
+
+// ── Back to top ──
+(function() {
+  const btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 600);
+  });
+})();
+
+// ── Mobile sidebar close on click outside ──
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('overlay').style.display = 'none';
+}
+
+// ── Mobile overlay ──
+document.querySelector('.mobile-toc-toggle').addEventListener('click', function() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('open');
+  overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+});
+document.getElementById('overlay').addEventListener('click', closeSidebar);
+</script>
+
+</body>
+</html>
