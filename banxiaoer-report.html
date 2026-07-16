@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>班小二 · 面试调研报告</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #fefefe;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --border: #e5e7eb;
+    --card-bg: #f9fafb;
+    --warn: #ea580c;
+    --green: #16a34a;
+    --red: #dc2626;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.8;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    text-align: center;
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .cover .badge {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: .3rem .85rem;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+  }
+  .cover h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    margin-bottom: .5rem;
+    color: #111827;
+  }
+  .cover .sub { color: var(--muted); font-size: 1.05rem; }
+  .cover .meta { margin-top: 1.5rem; font-size: .82rem; color: #9ca3af; }
+
+  /* ── Section headings ── */
+  h2 {
+    font-size: 1.35rem; font-weight: 700;
+    margin: 3rem 0 1rem;
+    padding-bottom: .55rem;
+    border-bottom: 2px solid var(--border);
+    color: #111827;
+    letter-spacing: -.01em;
+  }
+  h2 .num {
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    margin-right: .5rem;
+  }
+  h3 {
+    font-size: 1.05rem; font-weight: 700;
+    margin: 1.6rem 0 .5rem;
+    color: #1f2937;
+  }
+
+  p { margin-bottom: .75rem; color: #374151; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin: 1rem 0;
+  }
+  .card h3 { margin-top: 0; }
+
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th, td { text-align: left; padding: .55rem .8rem; border-bottom: 1px solid var(--border); }
+  th { background: #f3f4f6; font-weight: 600; font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Stats row ── */
+  .stat-row { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+  .stat-box {
+    flex: 1; min-width: 140px;
+    text-align: center;
+    background: var(--accent-light); border-radius: 10px; padding: 1.2rem 1rem;
+  }
+  .stat-box .val { font-size: 1.6rem; font-weight: 800; color: var(--accent); letter-spacing: -.02em; }
+  .stat-box .lbl { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+
+  /* ── Blockquote ── */
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: .6rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 8px 8px 0;
+    color: #374151; font-style: italic;
+    font-size: .92rem;
+  }
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block; padding: .15rem .55rem;
+    border-radius: 4px; font-size: .75rem; font-weight: 600; margin-right: .3rem;
+  }
+  .tag-blue { background: var(--accent-light); color: var(--accent); }
+  .tag-green { background: #dcfce7; color: var(--green); }
+  .tag-orange { background: #fff7ed; color: var(--warn); }
+
+  /* ── Timeline ── */
+  .timeline { margin: 1rem 0; }
+  .timeline-item { display: flex; gap: 1rem; padding: .7rem 0; border-left: 2px solid var(--border); padding-left: 1.2rem; position: relative; }
+  .timeline-item::before { content: ''; position: absolute; left: -5px; top: 1rem; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .timeline-item .year { font-weight: 700; color: var(--accent); min-width: 100px; font-size: .85rem; }
+  .timeline-item .event { color: #374151; font-size: .9rem; }
+
+  /* ── Grid ── */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0; }
+
+  /* ── Highlight text ── */
+  .hi { background: linear-gradient(180deg, transparent 60%, #fef3c7 60%); padding: 0 .15em; }
+  .hi-blue { background: linear-gradient(180deg, transparent 60%, #dbeafe 60%); padding: 0 .15em; }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  /* ── Footer ── */
+  .report-footer {
+    margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+    font-size: .78rem; color: #b0b7c3; text-align: center;
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { max-width: 100%; padding: 1rem; }
+    .card { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ COVER ══════════ -->
+<div class="cover">
+  <div class="badge">面试调研 · 机密</div>
+  <h1>班小二</h1>
+  <p class="sub">家校协同平台 · 面试前深度调研报告</p>
+  <div class="meta">
+    为 甘子俊 准备 · 2026年7月 · 产品运营岗
+  </div>
+</div>
+
+<!-- ══════════ 1. EXECUTIVE SUMMARY ══════════ -->
+<h2><span class="num">01</span> 公司速览</h2>
+
+<div class="stat-row">
+  <div class="stat-box"><div class="val">千万级</div><div class="lbl">覆盖用户</div></div>
+  <div class="stat-box"><div class="val">31+</div><div class="lbl">全场景功能</div></div>
+  <div class="stat-box"><div class="val">K12</div><div class="lbl">核心学段</div></div>
+  <div class="stat-box"><div class="val">天使轮</div><div class="lbl">融资阶段</div></div>
+  <div class="stat-box"><div class="val">北京+中山</div><div class="lbl">双城运营</div></div>
+</div>
+
+<div class="card">
+  <p><strong>班小二</strong>（北京班小二科技有限公司）是专注于 K12 家校协同的 SaaS 平台，以微信小程序 + 社群为核心载体，为老师和家长提供<strong>通知、作业、成绩管理、打卡、收费</strong>等 31+ 项全场景班级管理功能。公司以"<span class="hi">永久免费</span>"为核心策略，主打产品驱动增长，已服务千万级用户。2020 年获<strong>正念资本、北塔资本（蓝象资本）</strong>数百万元天使轮投资，被标榜为<strong>腾讯战略合作伙伴</strong>。</p>
+</div>
+
+<!-- ══════════ 2. COMPANY PROFILE ══════════ -->
+<h2><span class="num">02</span> 公司基本信息</h2>
+
+<div class="table-wrap">
+<table>
+  <tr><td><strong>全称</strong></td><td>北京班小二科技有限公司</td></tr>
+  <tr><td><strong>分公司</strong></td><td>北京班小二科技有限公司中山分公司（你面试的办公地点）</td></tr>
+  <tr><td><strong>成立时间</strong></td><td>约 2018-2019 年（产品上线于微信小程序生态爆发期）</td></tr>
+  <tr><td><strong>总部</strong></td><td>北京</td></tr>
+  <tr><td><strong>中山办公室</strong></td><td>中山市东区（产品运营 / 私域运营团队所在地）</td></tr>
+  <tr><td><strong>创始人/CEO</strong></td><td>杨阳</td></tr>
+  <tr><td><strong>融资轮次</strong></td><td>天使轮（2020年3月）</td></tr>
+  <tr><td><strong>融资额</strong></td><td>数百万元人民币</td></tr>
+  <tr><td><strong>投资方</strong></td><td>正念资本 · 北塔资本（蓝象资本）—— 均为教育赛道专业 VC</td></tr>
+  <tr><td><strong>产品形态</strong></td><td>微信小程序（核心）+ APP + H5</td></tr>
+  <tr><td><strong>核心标签</strong></td><td>家校沟通 · 班级管理 · 成绩私发 · 腾讯合作伙伴</td></tr>
+</table>
+</div>
+
+<!-- ══════════ 3. DEVELOPMENT ══════════ -->
+<h2><span class="num">03</span> 发展历程</h2>
+
+<div class="timeline">
+  <div class="timeline-item"><div class="year">2018-2019</div><div class="event">产品上线，以微信小程序切入家校沟通赛道，核心功能：通知、作业、成绩私密发布</div></div>
+  <div class="timeline-item"><div class="year">2019-2020</div><div class="event"><strong>快速自增长</strong>——通过微信群裂变实现用户自发传播，不依赖付费投放即获得规模化用户</div></div>
+  <div class="timeline-item"><div class="year">2020.03</div><div class="event">完成 <strong>数百万元天使轮融资</strong>（正念资本 & 北塔资本），验证产品-市场匹配（PMF）</div></div>
+  <div class="timeline-item"><div class="year">2020-2023</div><div class="event">持续迭代，功能从基础通知作业扩展到 31+ 全场景；建立腾讯战略合作关系</div></div>
+  <div class="timeline-item"><div class="year">2023-2025</div><div class="event"><strong>商业化探索</strong>——推出差异化版本（基础版免费 / 高级版付费），开始从工具向平台过渡</div></div>
+  <div class="timeline-item"><div class="year">2025-2026</div><div class="event">发力私域运营与用户增长，中山东区招聘运营团队，<strong>强化拉新、内容、社群能力</strong></div></div>
+</div>
+
+<blockquote>关键信号：班小二在融资前已实现产品的快速自增长，验证了 PMF。当前阶段核心命题是从「产品驱动增长」向「产品+运营双轮驱动」转型，这正是你面试岗位的战略背景。</blockquote>
+
+<!-- ══════════ 4. PRODUCT ══════════ -->
+<h2><span class="num">04</span> 产品功能全景</h2>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>📋 基础沟通类</h3>
+    <p>班级通知发布（已读/未读追踪）、班级相册、接龙报名、私信/群聊</p>
+  </div>
+  <div class="card">
+    <h3>📝 教学管理类</h3>
+    <p>作业布置与批改（定时布置/自动批改）、成绩私密发布、打卡任务、课程表、文件管理</p>
+  </div>
+  <div class="card">
+    <h3>👥 学生管理类</h3>
+    <p>学生点评（课堂表现反馈）、请假审批、成长档案、学生分组</p>
+  </div>
+  <div class="card">
+    <h3>💰 增值服务类</h3>
+    <p>班费收费管理、缴费统计、高级数据分析、个性化报表、VIP 功能</p>
+  </div>
+</div>
+
+<h3>核心差异化功能：成绩私密发布</h3>
+<blockquote>这是班小二最强调的差异化功能。传统方式（微信群发成绩单、张贴排名）存在隐私合规风险。班小二支持「一对一私密发成绩」——每位家长只能看到自家孩子的成绩，符合数据隐私政策要求。在"双减"和《个人信息保护法》背景下，这一功能具有政策合规优势。</blockquote>
+
+<!-- ══════════ 5. USER PROFILE ══════════ -->
+<h2><span class="num">05</span> 用户画像</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>维度</th><th>老师侧</th><th>家长侧</th></tr></thead>
+  <tbody>
+    <tr><td><strong>核心用户</strong></td><td>K12 班主任（25-50岁）</td><td>K12 学生家长（30-50岁）</td></tr>
+    <tr><td><strong>学段</strong></td><td>小学为主（使用频次最高）、初中、幼儿园</td><td>对应孩子所在学段</td></tr>
+    <tr><td><strong>地域</strong></td><td>二三线城市占比较高（对免费工具需求更强）</td><td>与老师地域匹配</td></tr>
+    <tr><td><strong>痛点</strong></td><td>班级事务繁杂、通知效率低、成绩发布麻烦、家长群消息混乱</td><td>孩子在校情况不透明、错过重要通知、作业监督难</td></tr>
+    <tr><td><strong>使用场景</strong></td><td>每日：发通知、批作业、发成绩、班级管理</td><td>每日：查看通知、了解作业、接收成绩、联系老师</td></tr>
+    <tr><td><strong>行为特征</strong></td><td>高频刚需、熟人推荐转化、迁移成本高（数据沉淀）</td><td>被动使用（老师选择什么就用什么）、低频但粘性高</td></tr>
+    <tr><td><strong>增长入口</strong></td><td>微信群裂变、同事推荐、应用搜索</td><td>老师邀请、班级群扫码引导</td></tr>
+  </tbody>
+</table>
+</div>
+
+<blockquote>面试思考：班小二的核心增长逻辑是「得老师者得家长」。一位老师使用 = 一个班级 40-60 个家长被动加入。因此拉新的核心是老师侧，家长侧的增长是自然的附带结果。这和普通 C 端产品的增长逻辑有本质区别。</blockquote>
+
+<!-- ══════════ 6. BUSINESS MODEL ══════════ -->
+<h2><span class="num">06</span> 商业模式分析</h2>
+
+<h3>当前模式：Freemium（免费增值）</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>层级</th><th>说明</th><th>收入贡献</th></tr></thead>
+  <tbody>
+    <tr><td><strong>基础版（免费）</strong></td><td>31+ 核心功能永久免费，覆盖 90%+ 的班级日常管理需求，作为用户规模和口碑的基石</td><td>零收入，承担获客与留存角色</td></tr>
+    <tr><td><strong>高级版（付费）</strong></td><td>解锁更多高级功能（数据分析、批量操作、定制化模板、更大存储空间等）</td><td>核心收入来源</td></tr>
+    <tr><td><strong>增值服务</strong></td><td>个性化报表、AI 辅助批改/点评、运营数据分析看板等</td><td>增长型收入</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>商业模式的特殊性</h3>
+<ul>
+  <li><strong>决策者 ≠ 付费者</strong>：老师是使用者（不愿付费），学校/教育局是潜在付费方（但决策链长）</li>
+  <li><strong>免费承诺的约束</strong>：早期以"永久免费"建立口碑，现在收费需非常谨慎，避免用户反感（已有小红书用户吐槽"开始收费了"）</li>
+  <li><strong>可能的变现路径</strong>：B2B 增值服务（卖给学校教育局）→ 广告（风险大，政策敏感）→ 教育周边电商 → 数据服务</li>
+</ul>
+
+<blockquote>面试思考：作为运营岗，你需要理解「免费用户池→付费转化」的漏斗设计。如何在不断绝免费承诺的前提下，通过内容、社群、活动引导用户自然升级到付费版，是这个岗位的核心挑战之一。</blockquote>
+
+<!-- ══════════ 7. COMPETITIVE ══════════ -->
+<h2><span class="num">07</span> 竞争格局与行业壁垒</h2>
+
+<h3>核心竞品对比</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>竞品</th><th>定位</th><th>核心差异</th><th>威胁等级</th></tr></thead>
+  <tbody>
+    <tr><td><strong>班级小管家</strong></td><td>小程序班级管理</td><td>功能高度相似，同样主打免费，直接竞品</td><td><span class="tag tag-orange">高</span></td></tr>
+    <tr><td><strong>晓黑板</strong></td><td>家校沟通 APP</td><td>有政府合作背景，在部分地区有政策优势</td><td><span class="tag tag-orange">中高</span></td></tr>
+    <tr><td><strong>企业微信（教育版）</strong></td><td>腾讯官方教育信息化</td><td>与教育局深度绑定，强在区级部署；弱在灵活性和用户体验</td><td><span class="tag tag-orange">中</span></td></tr>
+    <tr><td><strong>钉钉（教育版）</strong></td><td>阿里教育信息化</td><td>功能强大但学习成本高，更适合中学以上场景</td><td><span class="tag tag-green">中低</span></td></tr>
+    <tr><td><strong>腾讯课堂/小鹅通等</strong></td><td>在线教育工具</td><td>偏教学场景，非班级日常管理核心</td><td><span class="tag tag-green">低</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>行业壁垒</h3>
+<div class="grid-2">
+  <div class="card">
+    <h3>🔒 数据迁移壁垒（最强护城河）</h3>
+    <p>老师一个学期在平台沉淀了大量成绩数据、学生档案、通知记录。切换到竞品的迁移成本极高——这也是"先免费圈用户"策略的底层逻辑。</p>
+  </div>
+  <div class="card">
+    <h3>🔒 社交关系沉淀</h3>
+    <p>家长关系链建立在平台内（班级群、私信、通知已读状态），老师不会轻易更换，因为需要重新动员所有家长迁移。</p>
+  </div>
+  <div class="card">
+    <h3>🔒 微信生态先发优势</h3>
+    <p>小程序免安装、微信群无缝跳转、微信支付闭环——这是原生 APP 难以复制的体验优势。班小二作为早期入局者已积累品牌认知。</p>
+  </div>
+  <div class="card">
+    <h3>⚠️ 壁垒的脆弱性</h3>
+    <p>如果教育局或学校层面强制推行统一平台（如企业微信教育版），以老师个人为单位的工具选择权会被剥夺——这是最大的系统性风险。</p>
+  </div>
+</div>
+
+<!-- ══════════ 8. INDUSTRY ══════════ -->
+<h2><span class="num">08</span> 行业背景与政策环境</h2>
+
+<h3>市场规模</h3>
+<ul>
+  <li>中国 K12 阶段在校生约 <strong>1.8 亿+</strong>，对应约 <strong>1000 万+</strong> 在职中小学教师</li>
+  <li>每个班级按 40-50 人计算，约 <strong>400 万+</strong> 个班级单元</li>
+  <li>家校沟通/班级管理 SaaS 是一个 <strong>千亿级教育信息化市场</strong> 的垂直切口</li>
+  <li>全球家校沟通软件市场 2025-2031 年 CAGR 预计超 15%</li>
+</ul>
+
+<h3>政策红利</h3>
+<div class="card">
+  <ul>
+    <li><strong>"双减"政策（2021）</strong>：校外培训受限 → 校内教育重要性提升 → 学校对高效班级管理工具需求增加</li>
+    <li><strong>教育信息化 2.0（教育部）</strong>：推动中小学数字化校园建设，2025-2030 是教育数字化关键窗口期</li>
+    <li><strong>《个人信息保护法》（2021）</strong>：限制公开成绩排名 → 班小二的「私密发成绩」功能天然合规，反而成为政策受益者</li>
+    <li><strong>教育部"减负"要求</strong>：为教师减负是政策方向 → 自动化工具（AI 批改、批量通知）正合需求</li>
+  </ul>
+</div>
+
+<h3>政策风险</h3>
+<ul>
+  <li>教育类小程序广告和收费受到严格监管（已有政协委员提案"取消学校微信小程序广告"）</li>
+  <li>数据安全审查：学生个人信息属于敏感数据，平台需严格合规</li>
+  <li>地方教育局统一采购可能压缩市场化工具空间</li>
+</ul>
+
+<!-- ══════════ 9. GROWTH MODEL ══════════ -->
+<h2><span class="num">09</span> 增长模型深度分析</h2>
+
+<h3>历史增长逻辑（融资前已验证）</h3>
+<blockquote>班小二是典型的「产品驱动增长」（PLG）案例——无需大规模投放，靠微信群内的老师自发推荐实现用户增长。增长飞轮是：老师 A 用了觉得好 → 推荐给同年级老师 B/C → B/C 建班后邀请家长 → 家长跨年级/跨校传播 → 更多老师加入。</blockquote>
+
+<h3>当前增长挑战（你面试岗位的核心价值）</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>阶段</th><th>增长方式</th><th>瓶颈</th></tr></thead>
+  <tbody>
+    <tr><td><strong>2020 前</strong></td><td>纯产品驱动自增长（口碑裂变）</td><td>天花板低，速度慢</td></tr>
+    <tr><td><strong>2020-2023</strong></td><td>产品 + 轻度运营（公众号内容、社群基础维护）</td><td>缺乏系统化运营体系</td></tr>
+    <tr><td><strong>2024-2026（当前）</strong></td><td>产品 + <span class="hi-blue">内容运营 + 私域社群 + 渠道拓展</span></td><td>需要专业运营人才搭建体系</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>你面试的岗位 JD 明确提到 <strong>"拉新、内容和社群、事情杂且需要持续学习"</strong>，这恰好对应了班小二当前的战略阶段：从工具型产品向运营驱动平台转型。具体来说：</p>
+
+<ul>
+  <li><strong>拉新</strong>：不再只靠自然裂变，需要设计增长实验（A/B 测试不同裂变机制、渠道投放、KOL/KOC 老师合作）</li>
+  <li><strong>内容</strong>：生产吸引老师的运营内容——教学资源包、班级管理模板、优秀案例分享——用内容驱动下载和使用</li>
+  <li><strong>社群</strong>：搭建和运营老师私域社群，提升活跃度和留存，并将社群作为新产品功能和商业化实验的测试场</li>
+</ul>
+
+<!-- ══════════ 10. INTERVIEW INSIGHTS ══════════ -->
+<h2><span class="num">10</span> 面试技巧：如何让 HR 觉得你做了功课</h2>
+
+<h3>可以自然说出的"内部语言"</h3>
+<div class="card">
+  <ul>
+    <li>"我下载深度体验了班小二的小程序，对<strong>成绩私密发布</strong>这个功能印象很深——在'双减'和个保法背景下，这既是合规刚需也是差异化壁垒。"</li>
+    <li>"我注意到班小二主打'31+功能永久免费'，这种<strong>产品驱动增长</strong>的模式很有意思——老师侧的获客成本几乎为零，但商业化转化需要更精细的运营设计。"</li>
+    <li>"我的理解是班小二现在的核心命题是从<strong>产品驱动增长（PLG）向产品+运营双轮驱动</strong>转型，这可能也是这个岗位的核心职责。"</li>
+    <li>"班小二的核心增长飞轮是'<strong>得老师者得家长</strong>'，所以运营的重点应该是老师侧的内容和社群，而非直接面向家长获客。"</li>
+    <li>"我关注到班小二的竞品主要是<strong>班级小管家和晓黑板</strong>——班级小管家功能高度同质化，晓黑板有政府合作优势。班小二的差异化应该强化'腾讯合作伙伴'的生态优势和场景覆盖深度。"</li>
+  </ul>
+</div>
+
+<h3>可以反问面试官的问题</h3>
+<div class="card">
+  <ol>
+    <li>"目前班小二的<strong>用户增长</strong>主要靠自然裂变还是已经在做主动运营了？团队对今年的拉新目标是怎么拆解的？"</li>
+    <li>"老师社群的活跃度和留存率目前处于什么水平？社群运营的<strong>北极星指标</strong>是什么？"</li>
+    <li>"班小二在<strong>商业化探索</strong>上目前到什么阶段了？免费版到付费版的转化率目标是多少？运营团队在其中有怎样的角色？"</li>
+    <li>"公司对<strong>AIGC 在运营中的应用</strong>有什么想法？比如用 AI 辅助生成教学模板、自动回复、智能社群管理等。"</li>
+    <li>"中山团队和北京团队的分工是怎样的？这个岗位的<strong>成长路径</strong>大概是怎么规划的？"</li>
+  </ol>
+</div>
+
+<h3>面试时不要说的话</h3>
+<ul>
+  <li>❌ "我对你们公司还不太了解"</li>
+  <li>❌ "班小二是做什么的？是培训机构吗？"</li>
+  <li>❌ "我觉得教育行业增长太慢了，想来练练手"</li>
+  <li>❌ "免费产品怎么赚钱？"（显得不理解 freemium 模式）</li>
+</ul>
+
+<!-- ══════════ 11. KEY TAKEAWAYS ══════════ -->
+<h2><span class="num">11</span> 面试核心论点速记</h2>
+
+<div class="card" style="border-left: 4px solid var(--accent);">
+  <ol style="margin-left: 1.2rem;">
+    <li><strong>赛道理解</strong>：家校协同是教育信息化的刚需入口，K12 在校生 1.8 亿 + 构成天然用户池，政策利好（双减+教育数字化）持续释放</li>
+    <li><strong>公司定位</strong>：班小二是微信生态内家校管理工具的头部玩家之一，以「永久免费」建立用户壁垒，以「数据沉淀」构建迁移壁垒</li>
+    <li><strong>发展阶段</strong>：已完成 PMF 验证，天使轮融资，当前核心任务是从自然增长走向系统化增长——这正是你面试岗位的战略价值</li>
+    <li><strong>岗位匹配</strong>：你的教育行业经验（十方融海）、AIGC 应用能力、数据驱动思维，与班小二的增长阶段高度匹配</li>
+    <li><strong>你能带来的价值</strong>：① 把十方融海的增长运营方法论迁移到 K12 家校场景 ② 用 AIGC 规模化产出教师社群内容 ③ 搭建数据驱动的增长实验体系</li>
+  </ol>
+</div>
+
+<hr>
+
+<blockquote style="font-style: normal;">
+  <strong>一句话总结（面试开场时的自我介绍钩子）</strong>：<br>
+  "我之前在十方融海做教育产品的运营，对教育用户的行为特征有体感。我特别关注到班小二目前处在从产品驱动增长向运营驱动增长转型的关键阶段——用内容、社群、数据来放大产品的自然增长优势。这恰好是我擅长的事情。"
+</blockquote>
+
+<div class="report-footer">
+  <p>调研报告 · 甘子俊面试专用 · 基于公开信息整理于 2026年7月</p>
+  <p>来源：36氪 · 百度百科 · 搜狐科技 · 猎云网 · 芥末堆 · 知乎 · 小红书 · GitHub</p>
+  <p style="margin-top:.3rem"><small>注意：部分用户数据和财务数据为基于公开报道的估算，面试中引用时可表述为"据公开报道"而非确定数字。</small></p>
+</div>
+
+</body>
+</html>
